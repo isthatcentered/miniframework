@@ -2,7 +2,7 @@
 
 namespace Api\Entities\Categories;
 
-use Api\FunctionalTestCase;
+use Core\FunctionalTestCase;
 use PHPUnit\Framework\TestCase;
 
 class CategoriesControllerTest extends FunctionalTestCase

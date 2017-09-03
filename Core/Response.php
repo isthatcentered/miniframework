@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Api;
+namespace Core;
 
 
 class Response

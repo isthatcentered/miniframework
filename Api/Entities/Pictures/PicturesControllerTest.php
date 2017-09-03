@@ -2,7 +2,7 @@
 
 namespace Api\Entities\Pictures;
 
-use Api\FunctionalTestCase;
+use Core\FunctionalTestCase;
 use PHPUnit\Framework\TestCase;
 
 class PicturesControllerTest extends FunctionalTestCase

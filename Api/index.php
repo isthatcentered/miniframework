@@ -44,11 +44,3 @@ $app
 	
 	-> render( new Path( $PATH), $_SERVER[ 'REQUEST_METHOD' ] );
 
-
-// @todo: Categories controller all
-// @todo: Categories controller single
-// @todo: Pictures controller all
-// @todo: Pictures controller single
-// @Todo: Posts
-// @Todo: hydrate products
-// @todo: render method for app itself

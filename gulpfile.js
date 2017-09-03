@@ -64,7 +64,7 @@ gulp.task( 'server', [], () => {
 
 	bsync.init( {
 
-		files: [ 'index.{php,html}', '{App,Api,Core}/**/*.php' ], // Refresh browser when your see a change in one of those files
+		files: [ 'index.{php,html}', '{App,Api,Core}/**/*.{php,html,js}' ], // Refresh browser when your see a change in one of those files
 		// notify: false, // Don't log
 		//port: 3000,
 		ui: false,

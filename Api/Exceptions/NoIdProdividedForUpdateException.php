@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Api;
+namespace Api\Exceptions;
 
 
 class NoIdProdividedForUpdateException extends \Exception

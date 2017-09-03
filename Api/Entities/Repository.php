@@ -79,7 +79,7 @@ class Repository
 	{
 		return $db
 			-> query( "SELECT * FROM " . $table )
-			-> fetchAll();
+			-> fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	public static function emptyTable( \PDO $db, string $table )

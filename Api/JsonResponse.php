@@ -4,6 +4,8 @@
 namespace Api;
 
 
+use Core\Response;
+
 class JsonResponse extends Response
 {
 	public function __construct( $content, $status = 200) {

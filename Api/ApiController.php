@@ -3,24 +3,120 @@
 namespace Api;
 
 use Api\Entities\Repository;
+use Api\Exceptions\ItemNotFoundException;
+use Api\Exceptions\NoDataProvidedForInsertException;
+use Api\Exceptions\NoDataProvidedForUpdateException;
+use Api\Exceptions\NoIdProdividedForUpdateException;
 use Core\Services\Container\Container;
+use Core\Services\Path\PathHandler;
 
 class ApiController
 {
 	/**
 	 * @var Container
 	 */
-	private $container;
+	protected $container;
+	
+	/**
+	 * @var string $__table
+	 */
+	protected $__table;
+	
+	/**
+	 * @var string $__entity
+	 */
+	protected $__entity;
 	
 	/**
 	 * ApiController constructor.
 	 *
 	 * @param Container $container the instance of App Container passed by the Router
 	 */
-	public function __construct( Container $container )
+	public function __construct( string $table, string $entity, Container $container )
 	{
 		$this -> container = $container;
+		
+		$this -> __entity = $entity;
+		
+		$this -> __table = $table;
 	}
+	
+	public function postAction()
+	{
+		$data = $_POST;
+		
+		try {
+			
+			$posted = $this -> post( $this -> __table, $data );
+		} catch ( NoDataProvidedForInsertException $e ) {
+			
+			return new JsonResponse(
+				[ 'message' => 'No data provided. If you want to post something, then submitting data might be useful', 'code' => 500 ],
+				500
+			);
+		} catch ( \Exception $e ) {
+			
+			return new JsonErrorResponse( $e -> getMessage(), 500 );
+		}
+		
+		return new JsonResponse( $posted );
+	}
+	
+	public function updateAction()
+	{
+
+//		/**
+//		 * @var PathHandler $pathHandler
+//		 */
+//		$pathHandler = $this -> container -> get( 'pathHandler' );
+//
+//		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
+//
+//		$data = $_POST;
+//		var_dump($_POST);
+//		try {
+//
+//			$user = $this -> update( $this->>__table, $data );
+//		} catch ( ItemNotFoundException $e ) {
+//
+//			return new JsonErrorResponse( 'Not found. If you want me do my job, please do yours and provide a valid id', 404 );
+//		} catch ( NoDataProvidedForUpdateException $e ) {
+//
+//			return new JsonErrorResponse( 'No data. If you want me do my job, please do yours and provide a valid id', 500 );
+//		} catch ( NoIdProdividedForUpdateException $e ) {
+//
+//			return new JsonErrorResponse( 'No id. If you want me do my job, please do yours and provide a valid id', 500 );
+//		} catch ( \Exception $e ) {
+//
+//			return new JsonErrorResponse( $e -> getMessage(), 500 );
+//		}
+//
+//		return $user;
+	}
+	
+	public function deleteAction()
+	{
+		/**
+		 * @var PathHandler $pathHandler
+		 */
+		$pathHandler = $this -> container -> get( 'pathHandler' );
+		
+		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
+		
+		try {
+			
+			$succeded = $this -> delete( $this -> __table, $id );
+		} catch ( ItemNotFoundException $e ) {
+			
+			return new JsonErrorResponse( 'Not found. If you want me to kill someone, please provide a valid id', 404 );
+		} catch ( \Exception $e ) {
+			
+			return new JsonErrorResponse( $e -> getMessage(), 500 );
+		}
+		
+		return new JsonResponse( [ 'success' => $succeded ] );
+	}
+	
 	
 	/**
 	 * Returns the PDO instance stored in Container
@@ -100,7 +196,7 @@ class ApiController
 	 * Update a specified item with new data
 	 *
 	 * @param string $table Name of the table to fetch from
-	 * @param array  $data Data to populate table w+
+	 * @param array  $data  Data to populate table w+
 	 *
 	 * @return array The updated item as array
 	 * @throws ItemNotFoundException
@@ -148,5 +244,29 @@ class ApiController
 			throw new ItemNotFoundException();
 		
 		return true;
+	}
+	
+	// Helpers ============================================================================================
+	
+	/**
+	 *
+	 * @param string $class class to map into
+	 * @param array  $items array of items or single item to map
+	 *
+	 * @return array array of items of specified class
+	 */
+	public function mapTo( string $class, array $items ): array
+	{
+		if ( !$items )
+			return [];
+		
+		// is an array of items
+		if ( isset( $items[ 0 ] ) )
+			return array_map( function ( $item ) use ( $class ) {
+				return new $class( $item );
+			}, $items );
+		
+		// you've been passed a single item
+		return [ new $class( $items ) ];
 	}
 }

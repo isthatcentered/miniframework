@@ -2,36 +2,32 @@
 
 
 use Api\Entities\Users\User;
-use Api\NoDataProvidedForUpdateException;
-use PHPUnit\Framework\TestCase;
+use Api\Exceptions\ItemNotFoundException;
+use Api\Exceptions\NoDataProvidedForInsertException;
+use Api\Exceptions\NoDataProvidedForUpdateException;
+use Api\Exceptions\NoIdProdividedForUpdateException;
+use Core\FunctionalTestCase;
 
-class ApiControllerTest extends TestCase
+class ApiControllerTest extends FunctionalTestCase
 {
 	/** @var \Api\ApiController $__sut */
 	protected $__sut;
-	
-	/** @var \PDO $__db */
-	protected $__db;
 	
 	public function setUp()
 	{
 		
 		parent ::setUp();
 		
-		// Instanciate new test db
-		$this -> __db = ( new \Core\Services\PDOFactory\PDOFactory() ) -> make( 'test', [ 'db_name' => 'puppy_commerce_test' ] );
 		
 		// Prepare container mock to return test db
 		$containerStub = self ::createMock( \Core\Services\Container\Container::class );
 		$containerStub -> method( 'get' )
 			-> with( 'database' )
-			-> willReturn( $this -> __db );
+			-> willReturn( $this -> db );
 		
-		// Reset db
-		\Api\Entities\Repository ::emptyAll( $this -> __db );
 		
 		// Instantiate SUT with brand new mock
-		$this -> __sut = new \Api\ApiController( $containerStub );
+		$this -> __sut = new \Api\ApiController( '', '', $containerStub );
 	}
 	
 	
@@ -74,9 +70,9 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to return
-		$u = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$u = $this -> insertInTestDb( 'users', (array)$u );
 		
-		$u1 = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u1 );
+		$u1 = $this -> insertInTestDb( 'users', (array)$u1 );
 		
 		// Fetch
 		$res = $this -> __sut -> listAll( 'users' );
@@ -109,7 +105,7 @@ class ApiControllerTest extends TestCase
 	 */
 	public function show_when_no_items_found_should_throw()
 	{
-		self ::expectException( \Api\ItemNotFoundException::class );
+		self ::expectException( ItemNotFoundException::class );
 		
 		$this -> __sut -> show( 'users', 3 );
 	}
@@ -127,7 +123,7 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to return
-		$uId = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$uId = $this -> insertInTestDb( 'users', (array)$u );
 		
 		$match = $this -> __sut -> show( 'users', $uId );
 		
@@ -154,7 +150,7 @@ class ApiControllerTest extends TestCase
 	 */
 	public function post_when_no_data_provided_should_throw()
 	{
-		self ::expectException( \Api\NoDataProvidedForInsertException::class );
+		self ::expectException( NoDataProvidedForInsertException::class );
 		
 		$this -> __sut -> post( 'users', [] );
 	}
@@ -206,7 +202,7 @@ class ApiControllerTest extends TestCase
 	 */
 	public function delete_when_no_matching_item_found_should_throw()
 	{
-		self ::expectException( \Api\ItemNotFoundException::class );
+		self ::expectException( ItemNotFoundException::class );
 		
 		$this -> __sut -> delete( 'users', 3 );
 	}
@@ -222,7 +218,7 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to return
-		$uId = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$uId = $this -> insertInTestDb( 'users', (array)$u );
 		
 		self ::assertEquals( true, $this -> __sut -> delete( 'users', $uId ) );
 	}
@@ -255,7 +251,7 @@ class ApiControllerTest extends TestCase
 	 */
 	public function update_when_no_id_provided_in_data_should_throw()
 	{
-		self ::expectException( \Api\NoIdProdividedForUpdateException::class );
+		self ::expectException( NoIdProdividedForUpdateException::class );
 		
 		$this -> __sut -> update( 'IDONTEXISTHOMEY', [ 'some' => 'data' ] );
 	}
@@ -265,7 +261,7 @@ class ApiControllerTest extends TestCase
 	 */
 	public function update_when_non_existing_id_should_throw()
 	{
-		self ::expectException( \Api\ItemNotFoundException::class );
+		self ::expectException( ItemNotFoundException::class );
 		
 		$this -> __sut -> update( 'users', [ 'id' => 3 ] );
 	}
@@ -283,7 +279,7 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to test against
-		$uId = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$uId = $this -> insertInTestDb( 'users', (array)$u );
 		
 		$this -> __sut -> update( 'users', [ 'id' => $uId, 'IDONT' => 'EXIST' ] );
 	}
@@ -299,7 +295,7 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to test against
-		$uId = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$uId = $this -> insertInTestDb( 'users', (array)$u );
 		
 		$updated = $this -> __sut -> update( 'users', [ 'id' => $uId, 'name' => 'Kanyeze' ] );
 		
@@ -323,7 +319,7 @@ class ApiControllerTest extends TestCase
 			-> setAdmin( false );
 		
 		// Populate db to have something to test against
-		$uId = \Api\Entities\Repository ::insert( $this -> __db, 'users', (array)$u );
+		$uId = $this -> insertInTestDb( 'users', (array)$u );
 		
 		$updated = $this -> __sut -> update( 'users', [ 'id' => $uId ] );
 		
@@ -332,5 +328,59 @@ class ApiControllerTest extends TestCase
 		self ::assertEquals( $uId, $updated[ 'id' ] );
 		
 		self ::assertEquals( 'Kanye', $updated[ 'name' ] );
+	}
+	
+	// mapTo() ==========================================================================================
+	
+	/**
+	 * @test
+	 */
+	public function mapTo_when_passed_empty_arr_should_return_empty_arr()
+	{
+		self ::assertSame( [], $this -> __sut -> mapTo( User::class, [] ) );
+	}
+	
+	/**
+	 * @test
+	 */
+	public function mapTo_when_passed_array_of_objects_should_return_arr_of_objects_of_type_specified()
+	{
+		
+		$u = ( new User() )
+			-> setName( 'Kanye' )
+			-> setPassword( 'West' )
+			-> setAdmin( false );
+		
+		$u1 = ( new User() )
+			-> setName( 'Waffles' )
+			-> setPassword( 'Pancakes' )
+			-> setAdmin( false );
+		
+		$data = [ (array)$u, (array)$u1 ];
+		
+		$res = $this -> __sut -> mapTo( User::class, $data );
+		
+		self ::assertInternalType( 'array', $res );
+		
+		// Make sure each item returned is indeed of type user
+		foreach ( $res as $item )
+			self ::assertEquals( true, $this -> isArrInstanceOf( User::class, (array)$item ) );
+	}
+	
+	/**
+	 * @test
+	 */
+	public function mapTo_when_passed_an_object_should_return_object_of_type_specified_inside_arr()
+	{
+		$u = ( new User() )
+			-> setName( 'Kanye' )
+			-> setPassword( 'West' )
+			-> setAdmin( false );
+		
+		$res = $this -> __sut -> mapTo( User::class, (array)$u );
+		
+		self ::assertInternalType( 'array', $res );
+		
+		self ::assertEquals( true, $this -> isArrInstanceOf( User::class, (array)$res[0] ) );
 	}
 }

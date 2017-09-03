@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:8889
--- Généré le :  Ven 01 Septembre 2017 à 08:53
+-- Généré le :  Sam 02 Septembre 2017 à 16:17
 -- Version du serveur :  5.6.35
 -- Version de PHP :  7.0.15
 
@@ -79,7 +79,9 @@ CREATE TABLE `products` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
-  `price` int(11) NOT NULL
+  `price` int(11) NOT NULL,
+  `pictures` text NOT NULL,
+  `categories` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -91,11 +93,11 @@ TRUNCATE TABLE `products`;
 -- Contenu de la table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`) VALUES
-  (1, 'Dumbledore', 'An old sorecerer with a huge ass beard and cool magic power', 25),
-  (2, 'Kanye West', 'Recently married rapper with a bit of an ego\n', 15),
-  (3, 'Taylor Swift', 'Likes blank space. Not much of a Kanye West fan', 35),
-  (4, 'Kaaris', 'Tchoin tchoin tchoin?', 1);
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `pictures`, `categories`) VALUES
+  (1, 'Dumbledore', 'Some old wierd wizzard with a long ass beard', 99, '\'{}\'', '\'{}\''),
+  (2, 'Kanye West', 'Very self concious raper', 10, '\'{}\'', '\'{}\''),
+  (3, 'Taylor Swift', 'Nice pop singer that likes blank spaces very much', 120, '\'{}\'', '\'{}\''),
+  (4, 'Karris', 'Tchoin tchoin', 1, '\'{}\'', '\'{}\'');
 
 -- --------------------------------------------------------
 
@@ -120,9 +122,9 @@ TRUNCATE TABLE `users`;
 --
 
 INSERT INTO `users` (`id`, `name`, `password`, `admin`) VALUES
-  (1, 'Kanye West', 'guest', 0),
-  (2, 'Taylor Swift', 'blank_space', 0),
-  (4, 'Lou Bega', 'mambonumber5', 0);
+  (1, 'Kanye West', 'fishstick', 0),
+  (2, 'Taylor Swift', 'fspotify', 0),
+  (3, 'Booba', 'lepetitourson', 0);
 
 --
 -- Index pour les tables exportées
@@ -175,4 +177,4 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
