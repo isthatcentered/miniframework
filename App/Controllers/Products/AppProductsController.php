@@ -4,37 +4,12 @@
 namespace App\Controllers\Products;
 
 
-use App\Exceptions\UnableToReachApiException;
+use App\Controllers\AppController;
 use Core\Response;
-use Core\Services\Container\Container;
 use Core\Services\Path\PathHandler;
-use GuzzleHttp\Client;
 
-class AppProductsController
+class AppProductsController extends AppController
 {
-	/**
-	 * @var Container $container
-	 */
-	private $container;
-	
-	/**
-	 * @var Client $client
-	 */
-	private $client;
-	
-	/**
-	 * @var string $baseUrl
-	 */
-	private $baseUrl;
-	
-	public function __construct( Container $container )
-	{
-		$this -> container = $container;
-		
-		$this -> client = $this -> container -> get( 'apiClient' );
-		
-		$this -> baseUrl = $this -> container -> get( 'baseUrl' );
-	}
 	
 	public function indexAction()
 	{
@@ -68,59 +43,10 @@ class AppProductsController
 	
 	public function newAction()
 	{
-		
-		$messages = [];
-//		if ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) {
-//			dump( $_POST );
-//			// make a call to api
-//			$res = $this -> postToApi( 'products', $_POST );
-//
-//			$messages[] = [ 'type' => 'success', 'text' => 'Product created successfully with id ' . $res -> id ];
-//
-//			$_POST = [];
-//		}
-		
 		return new Response(
-			$this -> render( __DIR__ . '/create.php', [
-				'baseUrl' => $this -> baseUrl, 'messages' => $messages
-			] )
+			$this -> render( __DIR__ . '/create.php')
 		);
 	}
 	
 	
-	protected function fetchFromApi( string $endpoint )
-	{
-		
-		$req = $this -> client -> get( $endpoint );
-		
-		
-		if ( $req -> getStatusCode() !== 200 )
-			throw new UnableToReachApiException();
-		
-		return \GuzzleHttp\json_decode( $req -> getBody() -> getContents() );
-	}
-	
-	protected function postToApi( string $endpoint, $data )
-	{
-		$req = $this -> client -> post( $endpoint, [
-			'form_params' => $data
-		] );
-		
-		if ( $req -> getStatusCode() !== 200 )
-			throw new UnableToReachApiException();
-		
-		return \GuzzleHttp\json_decode( $req -> getBody() -> getContents() );
-	}
-	
-	protected function render( string $template, array $vars = [] )
-	{
-		// Buffer everything here (vars are passed)
-		ob_start();
-		
-		require $template;
-		
-		// End buffering and return buffered content
-		return ob_get_clean();
-		
-	}
 }

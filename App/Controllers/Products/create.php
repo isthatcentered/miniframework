@@ -8,10 +8,6 @@
 </ol>
 <main>
 	
-	
-	<?php foreach ( $vars[ 'messages' ] as $message ): ?>
-		<article class="alert alert-<?php echo $message[ 'type' ]; ?>"><?php echo $message[ 'text' ]; ?></article>
-	<?php endforeach; ?>
 
 	<form class="js-product-post"
 	      action="/"
