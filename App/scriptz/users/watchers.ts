@@ -89,3 +89,7 @@ $( '.js-auth-logout' ).on( 'click', function ( e ) {
 	// Redirect
 	window.location.href = APP_URL + '/logout'
 } )
+
+$( '.js-user-delete' ).on( 'click', function ( e ) {
+	
+} )

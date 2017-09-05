@@ -66,4 +66,15 @@ body
 		// Store flash message
 		StoreSessionHandler.addAlert( eData.message )
 	} )
+	
+	// LOG =============================================================================
+	.on( USERS_EVENTS.DELETE.getType(), function ( e ) {
+		
+		console.log( 'caught:', AppEvent.logEvent( e ) )
+		
+		let eData = AppEvent.getEventData( e )
+		
+		// Store flash message
+		StoreSessionHandler.addAlert( eData.message )
+	} )
 

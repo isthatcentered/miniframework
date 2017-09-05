@@ -22,6 +22,8 @@ $app
 	-> registerGet( '/admin/products', [ AppAdminController::class, 'productsListAction' ] )
 	-> registerGet( '/admin/products/new', [ AppAdminController::class, 'productsNewAction' ] )
 	-> registerGet( '/admin/products/:id', [ AppAdminController::class, 'productsShowAction' ] )
+	-> registerGet( '/admin/users', [ AppAdminController::class, 'usersListAction' ] )
+	-> registerGet( '/admin/users/:id', [ AppAdminController::class, 'usersShowAction' ] )
 	// Home =================================================================================
 	-> registerGet( '/', [ AppProductsController::class, 'indexAction' ] )
 	// Front ================================================================================

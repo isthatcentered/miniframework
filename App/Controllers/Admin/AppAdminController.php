@@ -45,6 +45,29 @@ class AppAdminController extends AppController
 		);
 	}
 	
+	public function usersListAction()
+	{
+		$items = $this -> fetchFromApi( 'users' );
+		
+		return new Response(
+			$this -> render( __DIR__ . '/views/users/list.php', [ 'items' => $items ] )
+		);
+	}
+	
+	public function usersShowAction()
+	{
+		/** @var PathHandler $pathHandler */
+		$pathHandler = $this -> container -> get( 'pathHandler' );
+		
+		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
+		
+		$item = $this -> fetchFromApi( 'users/' . $id );
+		
+		return new Response(
+			$this -> render( __DIR__ . '/views/users/single.php', [ 'item' => $item ] )
+		);
+	}
+	
 	public function productsNewAction()
 	{
 		
