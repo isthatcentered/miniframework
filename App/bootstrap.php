@@ -1,12 +1,24 @@
 <?php
 
+session_start();
+
 use GuzzleHttp\Client;
 
-$BASE_URL = 'http://' . $_SERVER[ 'HTTP_HOST' ] . str_replace( $_SERVER[ 'PATH_INFO' ], '', $_SERVER[ 'REQUEST_URI' ] );
+if ( $_SERVER[ 'PATH_INFO' ] !== '/' )
+	$BASE_URL = 'http://' . $_SERVER[ 'HTTP_HOST' ] . str_replace( $_SERVER[ 'PATH_INFO' ], '', $_SERVER[ 'REQUEST_URI' ] );
+// handle home case
+else
+	$BASE_URL = rtrim( 'http://' . $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'REQUEST_URI' ], '/' ); // //localhost:3000/puppy_commerce/ -> //localhost:3000/puppy_commerce
+
 $API_URL = $BASE_URL . '/api/';
 
+//dump( $BASE_URL );
 //dump( $API_URL );
-//dump($_SERVER);
+//dump( $_SERVER[ 'PATH_INFO' ] );
+//dump( $_SERVER[ 'REQUEST_URI' ] );
+//dump( str_replace( $_SERVER[ 'PATH_INFO' ], '', $_SERVER[ 'REQUEST_URI' ] ) );
+//dump( $_SERVER );
+//die;
 
 $container = new \Core\Services\Container\Container();
 

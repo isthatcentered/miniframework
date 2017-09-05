@@ -1,9 +1,3 @@
-<?php
-// These are now globally available for all templates
-$BASE_URL = 'http://' . $_SERVER[ 'HTTP_HOST' ] . str_replace( $_SERVER[ 'PATH_INFO' ], '', $_SERVER[ 'REQUEST_URI' ] );
-$API_URL = $BASE_URL . '/api/';
-
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,3 +13,20 @@ $API_URL = $BASE_URL . '/api/';
 	</style>
 </head>
 <body class="container">
+
+<header>
+	<nav>
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="<?php echo $vars['BASE_URL'] . '/login'; ?>" class="nav-link">Login</a>
+			</li>
+			<li class="nav-item">
+				<a href="<?php echo $vars['BASE_URL'] . '/logout'; ?>" class="nav-link js-auth-logout">Logout</a>
+			</li>
+			
+			<li class="nav-item">
+				<a href="<?php echo $vars['BASE_URL'] . '/register'; ?>" class="nav-link">Register</a>
+			</li>
+		</ul>
+	</nav>
+</header>

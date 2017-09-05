@@ -5,13 +5,15 @@
   "main": "gulpfile.js",
   "scripts": {
     "prestart": "",
-    "start": "gulp server",
+    "start": "webpack --config webpack.config.js & gulp server",
+    "scripts": "webpack --config webpack.config.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Edouard Penin <e.peninb@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/jquery": "^3.2.5",
     "bootstrap": "^4.0.0-alpha.6",
     "browser-sync": "^2.18.13",
     "gulp": "^3.9.1",
@@ -25,6 +27,12 @@
     "gulp-run-command": "0.0.9",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-wait": "0.0.2"
+    "gulp-typescript": "^3.2.2",
+    "gulp-wait": "0.0.2",
+    "inline-source-map": "^0.6.2",
+    "source-map-loader": "^0.2.1",
+    "ts-loader": "^2.3.4",
+    "typescript": "^2.5.2",
+    "webpack": "^3.5.5"
   }
 }

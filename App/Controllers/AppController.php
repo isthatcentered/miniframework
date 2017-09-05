@@ -62,7 +62,10 @@ class AppController
 	{
 		
 		$vars = array_merge( [
-			'BASE_URL' => $this -> baseUrl
+			'BASE_URL'  => $this -> baseUrl,
+			'URL_ADMIN' => $this -> baseUrl . '/admin',
+			'URL_HOME'  => $this -> baseUrl . '/',
+			'USER'      => $_SESSION[ 'user' ] ? : null
 		], $vars );
 		
 		// Buffer everything here (vars are passed)

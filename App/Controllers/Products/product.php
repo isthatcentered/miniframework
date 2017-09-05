@@ -3,8 +3,8 @@ $product = $vars[ 'product' ];
 ?>
 <?php require_once __DIR__ . '/../../partials/head.php'; ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="<?php echo $BASE_URL; ?>/">Accueil</a></li>
-	<li class="breadcrumb-item"><a href="<?php echo $BASE_URL; ?>/products">Products</a></li>
+	<li class="breadcrumb-item"><a href="<?php echo $vars['BASE_URL']; ?>/">Accueil</a></li>
+	<li class="breadcrumb-item"><a href="<?php echo $vars['BASE_URL']; ?>/products">Products</a></li>
 	<li class="breadcrumb-item active"><?php echo $product -> name; ?></li>
 </ol>
 

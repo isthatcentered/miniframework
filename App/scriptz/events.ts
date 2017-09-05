@@ -1,0 +1,5 @@
+const EVENTS = {
+
+}
+
+export { EVENTS }

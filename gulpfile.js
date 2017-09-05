@@ -37,26 +37,39 @@ gulp.task( 'styles', () =>
 gulp.task( 'styles:watch', [ 'styles' ], () =>
 	gulp.watch( STYLES + '**/*.scss', [ 'styles' ] ) )
 
+// Scripts ========================================================================================
+const PATH_SCRIPTS = 'App'
+gulp.task( 'scripts', () =>
+	gulp.src( PATH_SCRIPTS + '/**/*.ts', { base: '.' } )
+		.pipe( $.typescript( {
+			noEmitOnError: false,
+			target: 'ES5'
+		} ) )
+		.pipe( gulp.dest( '.' ) ) )
+
+gulp.task( 'scripts:watch', [ 'scripts' ], () =>
+	gulp.watch( PATH_SCRIPTS + '/**/*.ts', [ 'scripts' ] ) )
+
 
 // Pug ============================================================================================
-gulp.task( 'templates', () =>
-	gulp.src( TEMPLATES + '**/*.pug', { base: 'src' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
-		.pipe( $.plumber() ) // Allows watch to continue on error
-		.pipe( $.pug( {} ) )
-		.pipe( $.plumber.stop() ) // Allows watch to continue on error
-		.pipe( gulp.dest( DIST ) ) )
-
-gulp.task( 'templates:watch', [ 'templates' ], () =>
-	gulp.watch( TEMPLATES + '**/*.pug', [ 'templates' ] ) )
+// gulp.task( 'templates', () =>
+// 	gulp.src( TEMPLATES + '**/*.pug', { base: 'src' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
+// 		.pipe( $.plumber() ) // Allows watch to continue on error
+// 		.pipe( $.pug( {} ) )
+// 		.pipe( $.plumber.stop() ) // Allows watch to continue on error
+// 		.pipe( gulp.dest( DIST ) ) )
+//
+// gulp.task( 'templates:watch', [ 'templates' ], () =>
+// 	gulp.watch( TEMPLATES + '**/*.pug', [ 'templates' ] ) )
 
 
 // Assets ============================================================================================
-gulp.task( 'assets', () =>
-	gulp.src( ASSETS + '**/*.*', { base: 'src' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
-		.pipe( gulp.dest( DIST ) ) )
-
-gulp.task( 'assets:watch', [ 'assets' ], () =>
-	gulp.watch( ASSETS + '**/*.*', [ 'assets' ] ) )
+// gulp.task( 'assets', () =>
+// 	gulp.src( ASSETS + '**/*.*', { base: 'src' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
+// 		.pipe( gulp.dest( DIST ) ) )
+//
+// gulp.task( 'assets:watch', [ 'assets' ], () =>
+// 	gulp.watch( ASSETS + '**/*.*', [ 'assets' ] ) )
 
 
 // Server ============================================================================================

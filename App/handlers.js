@@ -59,50 +59,5 @@ body
 			.removeClass( 'loading' )
 	} )
 
-	// ALERTS ====================================================================
-	.on( EVENTS.ALERT.NEW, function ( e ) {
 
-		let { type, msg } = e.customData
 
-		body.prepend( cAlert( type, msg ) )
-	} )
-
-	// DELETE ====================================================================
-	.on( EVENTS.DELETE.ASK, function ( e ) {
-
-		// ALert, you sure
-		if ( confirm( 'Are you sure about deleting this product' ) )
-			dispatch( EVENTS.DELETE.CONFIRMED, e.customData )
-		else
-			dispatch( EVENTS.DELETE.CANCELED, e.customData )
-	} )
-	.on( EVENTS.DELETE.CONFIRMED, function ( e ) {
-
-		let { action, link } = e.customData
-
-		// Make a call to action,
-		$.ajax( {
-			url: action,
-			method: 'DELETE'
-		} )
-			.done( ( data ) => dispatch( EVENTS.DELETE.SUCCESS, {
-				data,
-				msg: 'Produit supprimé, <a href="' + APP_URL + '/products' + '">Revenir aux produits?</a>'
-			} ) )
-			.fail( ( err ) => dispatch( EVENTS.DELETE.ERROR, { err } ) )
-	} )
-	.on( EVENTS.DELETE.CANCELED, function ( e ) {
-		dispatchAlert( 'info', 'As asked, nothing was deleted' )
-	} )
-	.on( EVENTS.DELETE.SUCCESS, function ( e ) {
-
-		let { data, msg } = e.customData
-
-		dispatchAlert( 'success', msg )
-	} )
-	.on( EVENTS.DELETE.ERROR, function ( e ) {
-
-		let { err } = e.customData
-
-		dispatchAlert( 'danger', err.responseJSON.code + ': ' + err.responseJSON.message )
-	} )

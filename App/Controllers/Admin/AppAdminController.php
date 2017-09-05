@@ -6,6 +6,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\AppController;
 use Core\Response;
+use Core\Services\Path\PathHandler;
 
 class AppAdminController extends AppController
 {
@@ -27,6 +28,28 @@ class AppAdminController extends AppController
 		
 		return new Response(
 			$this -> render( __DIR__ . '/views/products/list.php', [ 'products' => $products ] )
+		);
+	}
+	
+	public function productsShowAction()
+	{
+		/** @var PathHandler $pathHandler */
+		$pathHandler = $this -> container -> get( 'pathHandler' );
+		
+		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
+		
+		$product = $this -> fetchFromApi( 'products/' . $id );
+		
+		return new Response(
+			$this -> render( __DIR__ . '/views/products/single.php', [ 'product' => $product ] )
+		);
+	}
+	
+	public function productsNewAction()
+	{
+		
+		return new Response(
+			$this -> render( __DIR__ . '/views/products/new.php', [] )
 		);
 	}
 }

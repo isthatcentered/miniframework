@@ -153,11 +153,11 @@ class ApiController
 	 * @throws ItemNotFoundException when item not found
 	 * @throws \PDOException when table not found
 	 */
-	public function show( string $table, int $id )
+	public function show( string $table, int $id, $findBy = 'id' )
 	{
 		$db = $this -> __getDb();
 		
-		$resource = Repository ::findBy( $db, $table, [ 'id' => $id ] );
+		$resource = Repository ::findBy( $db, $table, [ $findBy => $id ] );
 		
 		// Not found
 		if ( !$resource )
