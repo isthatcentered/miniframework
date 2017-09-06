@@ -4,47 +4,33 @@
 namespace Api\Entities\Pictures;
 
 
+use Api\ApiController;
+use Api\Exceptions\ItemNotFoundException;
+use Api\Exceptions\NoDataProvidedForInsertException;
 use Api\JsonErrorResponse;
 use Api\JsonResponse;
 use Core\Services\Container\Container;
 use Core\Services\Path\PathHandler;
 
-class PicturesController
+class PicturesController extends ApiController
 {
-	/**
-	 * @var Container
-	 */
-	private $container;
-	
 	
 	public function __construct( Container $container )
 	{
-		$this -> container = $container;
+		parent ::__construct( 'pictures', Picture::class, $container );
 	}
 	
 	public function indexAction( array $params )
 	{
-		/**
-		 * @var \PDO $db
-		 */
-		$db = $this -> container -> get( 'database' );
+		try {
+			
+			$resources = $this -> listAll( $this -> __table );
+		} catch ( \Exception $e ) {
+			
+			return new JsonErrorResponse( $e -> getMessage() );
+		}
 		
-		// Fetching all users
-		$picturesResource = $db
-			-> query( "SELECT * FROM pictures" )
-			-> fetchAll();
-		
-		// Mapping returned resource to a User object
-		$pictures = array_map(
-			function ( $picture ) use ( &$pictures ) {
-				
-				return new Picture( $picture );
-			},
-			$picturesResource );
-		
-		//	// Display
-		//	// Create json response from node
-		return new JsonResponse( $pictures );
+		return new JsonResponse( $resources );
 	}
 	
 	
@@ -56,26 +42,106 @@ class PicturesController
 		 */
 		$pathHandler = $this -> container -> get( 'pathHandler' );
 		
-		$arg = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
+		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
 		
-		// Get matching user
-		/**
-		 * @var \PDO $db
-		 */
-		$db = $this -> container -> get( 'database' );
+		try {
+			
+			$u = $this -> show( $this -> __table, $id );
+		} catch ( ItemNotFoundException $e ) {
+			
+			return new JsonErrorResponse( 'Sorry, this guy might exist but definitly not in the database', 404 );
+		} catch ( \Exception $e ) {
+			
+			return new JsonErrorResponse( $e -> getMessage(), 500 );
+		}
+		
+		return new JsonResponse( $u );
+	}
+	
+	public function uploadAction()
+	{
 		
 		
-		// Fetching all users
-		$pictureResource = $db
-			-> prepare( "SELECT * FROM pictures WHERE id = :id" );
-		$pictureResource -> execute( [ 'id' => $arg ] );
+		// Get path
+		// Store path in db w/ id
 		
-		$p = $pictureResource -> fetch();
+		return new JsonResponse( [], 200 );
+	}
+	
+	/**
+	 * @param array    $file $_FILES arr item
+	 * @param string[] $allowed
+	 * @param string   $to   dir to upload to
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	protected function __uploadImg(
+		array $file,
+		array $allowed = [ 'jpeg', 'jpg', 'png' ],
+		string $to = __DIR__ . '/../../../public/uploads/images/'
+	): array
+	{
+		if ( !$file )
+			throw new \Exception( 'No file submitted for upload' );
 		
-		if ( !$p )
-			return new JsonErrorResponse( 'Sorry, this product might exist but definitly not in the database', 404 );
+		$file_name = $file[ 'name' ];
+		$file_ext = explode( '.', $file_name );
+		$file_ext = array_pop( $file_ext );
 		
+		if ( !in_array( $file_ext, $allowed ) )
+			throw new \Exception( 'File extension ' . $file_ext . ' not allowed for images' );
 		
-		return new JsonResponse( new Picture($p) );
+		// @Todo: check file size
+		
+		$is_successful = move_uploaded_file( $file[ 'tmp_name' ], $to . $file_name );
+		
+		if ( !$is_successful )
+			throw new \Exception( 'Something wrong happend while uploading file ' . $file_name, 500 );
+		
+		return [
+			"name" => $file_name
+		];
+	}
+	
+	public function upload( string $filePath, string $to = __DIR__ . '/../../../public/uploads/images/' )
+	{
+		$temp_dir = $this -> __getTempDir();
+		
+		$file = $temp_dir . '/' . $filePath;
+		
+		var_dump( $file );
+		// Folder post exists ?
+		// File at path exists ?
+		
+		return file_exists( $file );
+	}
+	
+	public function postAction()
+	{
+		if ( !$_FILES )
+			throw new \Exception( 'No image provided for upload' );
+		
+		$img = $this -> __uploadImg( array_pop( $_FILES ) );
+		
+		$data = ( new Picture() )
+			-> setAlt( $_POST[ 'alt' ] )
+			-> setUrl( $img[ 'name' ] );
+		
+		try {
+			
+			$posted = $this -> post( $this -> __table, (array)$data );
+		} catch ( NoDataProvidedForInsertException $e ) {
+			
+			return new JsonResponse(
+				[ 'message' => 'No data provided. If you want to post something, then submitting data might be useful', 'code' => 500 ],
+				500
+			);
+		} catch ( \Exception $e ) {
+			
+			return new JsonErrorResponse( $e -> getMessage(), 500 );
+		}
+		
+		return new JsonResponse( $posted );
 	}
 }

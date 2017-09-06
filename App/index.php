@@ -2,6 +2,7 @@
 
 
 use App\Controllers\Admin\AppAdminController;
+use App\Controllers\Admin\AppAdminPicturesController;
 use App\Controllers\Products\AppProductsController;
 use App\Controllers\Users\AppUsersController;
 use Core\Entities\Path;
@@ -19,14 +20,20 @@ $PATH = $_SERVER[ 'PATH_INFO' ] ?? '/';
 $app
 	// Admin ================================================================================
 	-> registerGet( '/admin', [ AppAdminController::class, 'indexAction' ] )
+	// - Products
 	-> registerGet( '/admin/products', [ AppAdminController::class, 'productsListAction' ] )
 	-> registerGet( '/admin/products/new', [ AppAdminController::class, 'productsNewAction' ] )
 	-> registerGet( '/admin/products/:id', [ AppAdminController::class, 'productsShowAction' ] )
+	// - Users
 	-> registerGet( '/admin/users', [ AppAdminController::class, 'usersListAction' ] )
 	-> registerGet( '/admin/users/:id', [ AppAdminController::class, 'usersShowAction' ] )
+	// - Pictures
+	-> registerGet( '/admin/pictures', [ AppAdminPicturesController::class, 'indexAction' ] )
+	-> registerGet( '/admin/pictures/new', [ AppAdminPicturesController::class, 'newAction' ] )
 	// Home =================================================================================
 	-> registerGet( '/', [ AppProductsController::class, 'indexAction' ] )
 	// Front ================================================================================
+	// - Products
 	-> registerGet( '/products', [ AppProductsController::class, 'indexAction' ] )
 	-> registerGet( '/products/:id', [ AppProductsController::class, 'showAction' ] )
 	-> registerGet( '/products/new', [ AppProductsController::class, 'newAction' ] )

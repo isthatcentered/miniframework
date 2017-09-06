@@ -269,4 +269,10 @@ class ApiController
 		// you've been passed a single item
 		return [ new $class( $items ) ];
 	}
+	
+	protected function __getTempDir(): string
+	{
+		return sys_get_temp_dir();
+		return ini_get( 'upload_tmp_dir' ) ? : sys_get_temp_dir();
+	}
 }

@@ -15,12 +15,12 @@ $app = new App( $container );
 
 // Getting current api path used ============================================
 $path_arg = $_SERVER[ 'PATH_INFO' ] ?? '/';
-$PATH = str_replace('/api', '', $path_arg ); // '/api/somestuff' -> '/somestuff'
+$PATH = str_replace( '/api', '', $path_arg ); // '/api/somestuff' -> '/somestuff'
 
 
 // Registering api routes ====================================================
 $app
-	-> registerGet( '/', function() {
+	-> registerGet( '/', function () {
 		echo 'Api home, nothing to see here';
 		die;
 	} )
@@ -29,18 +29,15 @@ $app
 	-> registerPost( '/users', [ UsersController::class, 'postAction' ] )
 	-> registerPut( '/users/:id', [ UsersController::class, 'updateAction' ] )
 	-> registerDelete( '/users/:id', [ UsersController::class, 'deleteAction' ] )
-
 	-> registerGet( '/products', [ ProductsController::class, 'indexAction' ] )
 	-> registerGet( '/products/:id', [ ProductsController::class, 'singleAction' ] )
 	-> registerPost( '/products', [ ProductsController::class, 'postAction' ] )
 	-> registerPut( '/products/:id', [ ProductsController::class, 'updateAction' ] )
 	-> registerDelete( '/products/:id', [ ProductsController::class, 'deleteAction' ] )
-	
 	-> registerGet( '/categories', [ CategoriesController::class, 'indexAction' ] )
 	-> registerGet( '/categories/:id', [ CategoriesController::class, 'singleAction' ] )
-
 	-> registerGet( '/pictures', [ PicturesController::class, 'indexAction' ] )
+	-> registerPost( '/pictures', [ PicturesController::class, 'postAction' ] )
 	-> registerGet( '/pictures/:id', [ PicturesController::class, 'singleAction' ] )
-	
-	-> render( new Path( $PATH), $_SERVER[ 'REQUEST_METHOD' ] );
+	-> render( new Path( $PATH ), $_SERVER[ 'REQUEST_METHOD' ] );
 

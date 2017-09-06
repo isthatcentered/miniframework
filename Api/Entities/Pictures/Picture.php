@@ -11,10 +11,6 @@ class Picture
 	 */
 	public $id;
 	
-	/**
-	 * @var int
-	 */
-	public $productId;
 	
 	/**
 	 * @var string
@@ -31,12 +27,14 @@ class Picture
 	 *
 	 * @param array $picture
 	 */
-	public function __construct( array $picture )
+	public function __construct( array $picture = [] )
 	{
-		$this -> id = $picture['id'];
-		$this -> productId = $picture['productId'];
-		$this -> url = $picture['url'];
-		$this -> alt = $picture['alt'] ?: '';
+		if ( $picture ) {
+			$this -> id = $picture[ 'id' ];
+			$this -> url = $picture[ 'url' ];
+			$this -> alt = $picture[ 'alt' ] ? : '';
+		}
+		
 	}
 	
 	/**
@@ -50,29 +48,9 @@ class Picture
 	/**
 	 * @param int $id
 	 *
-	 * @return $this
+	 * @return Picture
 	 */
-	public function setId( int $id )
-	{
-		$this -> id = $id;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getProductId(): int
-	{
-		return $this -> id;
-	}
-	
-	/**
-	 * @param int $id
-	 *
-	 * @return $this
-	 */
-	public function setProductId( int $id )
+	public function setId( int $id ): Picture
 	{
 		$this -> id = $id;
 		
@@ -90,9 +68,9 @@ class Picture
 	/**
 	 * @param string $url
 	 *
-	 * @return $this
+	 * @return Picture
 	 */
-	public function setUrl( string $url )
+	public function setUrl( string $url ): Picture
 	{
 		$this -> url = $url;
 		
@@ -110,15 +88,14 @@ class Picture
 	/**
 	 * @param string $alt
 	 *
-	 * @return $this
+	 * @return Picture
 	 */
-	public function setAlt( string $alt )
+	public function setAlt( string $alt ): Picture
 	{
 		$this -> alt = $alt;
 		
 		return $this;
 	}
-	
 	
 	
 }

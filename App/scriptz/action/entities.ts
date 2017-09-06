@@ -5,6 +5,10 @@ export interface IAjaxAction
 	url: string
 	method: string // 'GET', 'POST'
 	data?
+	contentType?: string|boolean
+	processData?:  boolean
+	beforeSend: any
+	
 }
 
 export interface IActionEvent
