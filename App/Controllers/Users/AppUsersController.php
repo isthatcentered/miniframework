@@ -14,7 +14,13 @@ class AppUsersController extends AppController
 	public function loginAction()
 	{
 		return new Response(
-			$this -> render( __DIR__ . '/views/login.php' )
+			$this -> render( __DIR__ . '/views/login.php', [
+				'page_title' => '',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '/' ],
+					[ 'link' => 'login', 'url' => '/login' ]
+				]
+			] )
 		);
 	}
 	
@@ -23,7 +29,13 @@ class AppUsersController extends AppController
 		// no user with same username
 		// Encode pword
 		return new Response(
-			$this -> render( __DIR__ . '/views/register.php' )
+			$this -> render( __DIR__ . '/views/register.php', [
+				'page_title' => '',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '/' ],
+					[ 'link' => 'S\'enregistrer', 'url' => '/register' ]
+				]
+			] )
 		);
 	}
 	

@@ -17,31 +17,28 @@ class AppAdminPicturesController extends AppController
 		
 		return new Response(
 			$this -> render( __DIR__ . '/views/pictures/list.php', [
-				'items' => $items
+				'items'       => $items,
+				'page_title' => 'Images',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Images', 'url' => '/pictures' ]
+				]
 			] )
 		);
 	}
 	
-	public function showAction()
-	{
-		/** @var PathHandler $pathHandler */
-		$pathHandler = $this -> container -> get( 'pathHandler' );
-		
-		$id = $pathHandler -> getArg( $_SERVER[ 'PATH_INFO' ] );
-		
-		$item = $this -> fetchFromApi( 'pictures/' . $id );
-		
-		return new Response(
-			$this -> render( __DIR__ . '/views/pictures/single.php', [
-				'item' => $item
-			] )
-		);
-	}
 	
 	public function newAction()
 	{
 		return new Response(
-			$this -> render( __DIR__ . '/views/pictures/new.php' )
+			$this -> render( __DIR__ . '/views/pictures/new.php', [
+				'page_title' => 'Nouveau',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Images', 'url' => '/pictures' ],
+					[ 'link' => 'Nouveau', 'url' => '' ],
+				]
+			] )
 		);
 	}
 }

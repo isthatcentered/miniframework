@@ -16,9 +16,17 @@ class AppAdminController extends AppController
 	{
 		$products = array_slice( $this -> fetchFromApi( 'products' ), 0, 6 );
 		
+		$this -> guard( $this -> isAdmin() );
+		
 		// List all products
 		return new Response(
-			$this -> render( __DIR__ . '/home.php', [ 'products' => $products ] )
+			$this -> render( __DIR__ . '/home.php', [
+				'products'    => $products,
+				'page_title'  => 'Accueil',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+				]
+			] )
 		);
 	}
 	
@@ -27,7 +35,14 @@ class AppAdminController extends AppController
 		$products = $this -> fetchFromApi( 'products' );
 		
 		return new Response(
-			$this -> render( __DIR__ . '/views/products/list.php', [ 'products' => $products ] )
+			$this -> render( __DIR__ . '/views/products/list.php', [
+				'products'    => $products,
+				'page_title'  => 'Produits',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Produits', 'url' => '/products' ],
+				]
+			] )
 		);
 	}
 	
@@ -41,7 +56,30 @@ class AppAdminController extends AppController
 		$product = $this -> fetchFromApi( 'products/' . $id );
 		
 		return new Response(
-			$this -> render( __DIR__ . '/views/products/single.php', [ 'product' => $product ] )
+			$this -> render( __DIR__ . '/views/products/single.php', [
+				'product'     => $product,
+				'page_title'  => $product -> name,
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Produits', 'url' => '/products' ],
+					[ 'link' => $product -> name, 'url' => '' ],
+				]
+			] )
+		);
+	}
+	
+	public function productsNewAction()
+	{
+		
+		return new Response(
+			$this -> render( __DIR__ . '/views/products/new.php', [
+				'page_title'  => 'Nouveau',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Produits', 'url' => '/products' ],
+					[ 'link' => 'Nouveau', 'url' => '' ],
+				]
+			] )
 		);
 	}
 	
@@ -50,7 +88,14 @@ class AppAdminController extends AppController
 		$items = $this -> fetchFromApi( 'users' );
 		
 		return new Response(
-			$this -> render( __DIR__ . '/views/users/list.php', [ 'items' => $items ] )
+			$this -> render( __DIR__ . '/views/users/list.php', [
+				'items'       => $items,
+				'page_title'  => 'Utilisateurs',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Utilisateurs', 'url' => '/users' ]
+				]
+			] )
 		);
 	}
 	
@@ -64,15 +109,16 @@ class AppAdminController extends AppController
 		$item = $this -> fetchFromApi( 'users/' . $id );
 		
 		return new Response(
-			$this -> render( __DIR__ . '/views/users/single.php', [ 'item' => $item ] )
+			$this -> render( __DIR__ . '/views/users/single.php', [
+				'item'        => $item,
+				'page_title'  => $item -> name,
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '' ],
+					[ 'link' => 'Utilisateurs', 'url' => '/users' ],
+					[ 'link' => $item -> name, 'url' => '' ],
+				]
+			] )
 		);
 	}
 	
-	public function productsNewAction()
-	{
-		
-		return new Response(
-			$this -> render( __DIR__ . '/views/products/new.php', [] )
-		);
-	}
 }

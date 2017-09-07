@@ -23,6 +23,11 @@ class Picture
 	public $alt;
 	
 	/**
+	 * @var int
+	 */
+	public $productId;
+	
+	/**
 	 * Picture constructor.
 	 *
 	 * @param array $picture
@@ -55,6 +60,14 @@ class Picture
 		$this -> id = $id;
 		
 		return $this;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getProductId(): int
+	{
+		return $this -> productId;
 	}
 	
 	/**
@@ -93,6 +106,18 @@ class Picture
 	public function setAlt( string $alt ): Picture
 	{
 		$this -> alt = $alt;
+		
+		return $this;
+	}
+	
+	/**
+	 * @param int $productId
+	 *
+	 * @return Picture
+	 */
+	public function setProductId( int $productId ): Picture
+	{
+		$this -> productId = $productId;
 		
 		return $this;
 	}

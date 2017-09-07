@@ -15,8 +15,7 @@ export class BasketItemRemoveComponent implements IComponent
 	
 	render()
 	{
-		let button = $( `<a href="#">X</a>` )
-			.addClass('ml-1')
+		let button = $( `<a class="text-secondary -underline" href="#">Enlever</a>` )
 			.on( 'click', () => {
 				EVENTS_BASKET.REMOVE.dispatch( <IEventDataBasketRemove>{
 					from:      undefined,

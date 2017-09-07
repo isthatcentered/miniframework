@@ -5,18 +5,10 @@ require_once __DIR__ . '/../../partials/head.php';
 ?>
 
 
-<header>
-	<?php require_once __DIR__ . '/../../partials/nav.php'; ?>
-</header>
+<?php require_once __DIR__ . '/../../partials/header.php'; ?>
 
 
 <div class="container">
-	
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="<?php echo $vars[ 'URL_ADMIN' ]; ?>">Accueil</a></li>
-		<li class="breadcrumb-item"><a href="<?php echo $vars[ 'URL_ADMIN' ] . '/products'; ?>">Produits</a></li>
-		<li class="breadcrumb-item active"><?php echo $product -> name; ?></li>
-	</ol>
 	
 	<main class="row">
 		<div class="col-12">

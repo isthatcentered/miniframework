@@ -17,22 +17,24 @@ export class BasketItemSingleComponent implements IComponent
 		this.state.item = item
 	}
 	
-	onDelClick()
-	{
-		console.log( 'Yeah' )
-	}
-	
 	render()
 	{
-		let removeButton = new BasketItemRemoveComponent( this.state.item.product.id ).render(),
-		    link         = $( ` <a href="${APP_URL}/products/${this.state.item.product.id}"> ${this.state.item.product.name} </a> ` ),
-		    qty          = $( `<span>- x${this.state.item.getQty()}</span>` ),
-		    total        = $( ` <span> ${this.state.item.getTotal()}€</span>` )
+		let tpl = $( `
+			<div class="media mb-3">
+				<div class="media-body mr-2">
+					<a href="${APP_URL}/products/${this.state.item.product.id}">${this.state.item.getQty()}x ${this.state.item.product.name} </a>
+					<br>
+				</div>
+				<div class="media-right">
+					<span class="text-muted">${this.state.item.getTotal()}€</span>
+				</div>
+			</div>
+		` )
 		
-		return $( '<div></div>' )
-			.append( link )
-			.append( qty )
-			.append( total )
-			.append( removeButton )
+		tpl
+			.find( '.media-body' )
+			.append( new BasketItemRemoveComponent( this.state.item.product.id ).render() )
+		
+		return tpl
 	}
 }

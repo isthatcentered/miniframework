@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 
+use Api\Entities\Users\User;
 use App\Exceptions\UnableToReachApiException;
 use Core\Services\Container\Container;
 use GuzzleHttp\Client;
@@ -62,10 +63,12 @@ class AppController
 	{
 		
 		$vars = array_merge( [
-			'BASE_URL'  => $this -> baseUrl,
-			'URL_ADMIN' => $this -> baseUrl . '/admin',
-			'URL_HOME'  => $this -> baseUrl . '/',
-			'USER'      => $_SESSION[ 'user' ] ? : null
+			'BASE_URL'     => $this -> baseUrl,
+			'URL_ADMIN'    => $this -> baseUrl . '/admin',
+			'URL_HOME'     => $this -> baseUrl . '/',
+			'USER'         => $this -> getUser() ? : null,
+			'IS_ADMIN'     => $this -> isAdmin(),
+			'IS_LOGGED_IN' => $this -> isLoggedIn()
 		], $vars );
 		
 		// Buffer everything here (vars are passed)
@@ -76,5 +79,39 @@ class AppController
 		// End buffering and return buffered content
 		return ob_get_clean();
 		
+	}
+	
+	protected function guard( bool $condition )
+	{
+		
+		if ( !$condition ) {
+			echo '<h1>Unauthorized</h1>';
+			echo '<img src="https://media.giphy.com/media/5ftsmLIqktHQA/giphy.gif" alt="Unauthorized">';
+			die;
+		}
+	}
+	
+	/**
+	 * @return User
+	 */
+	protected function getUser()
+	{
+		return $_SESSION[ 'user' ];
+	}
+	
+	/**
+	 * @return bool
+	 */
+	protected function isLoggedIn()
+	{
+		return $this -> getUser() != null;
+	}
+	
+	/**
+	 * @return bool
+	 */
+	protected function isAdmin()
+	{
+		return $this -> getUser() ? $this -> getUser() -> isAdmin() : false;
 	}
 }

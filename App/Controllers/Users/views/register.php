@@ -1,10 +1,7 @@
 <?php require_once __DIR__ . '/../../../partials/head.php'; ?>
 
+<?php require_once __DIR__ . '/../../../partials/header.php'; ?>
 
-<ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="<?php echo $BASE_URL; ?>/">Accueil</a></li>
-	<li class="breadcrumb-item active">S'enregistrer</li>
-</ol>
 <main>
 	
 	<form class="js-auth-register" method="post" action="<?php echo $BASE_URL . '/authenticate'; ?>">

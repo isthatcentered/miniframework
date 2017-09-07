@@ -119,14 +119,18 @@ class PicturesController extends ApiController
 	
 	public function postAction()
 	{
-		if ( !$_FILES )
-			throw new \Exception( 'No image provided for upload' );
+		$file = array_pop( $_FILES );
 		
-		$img = $this -> __uploadImg( array_pop( $_FILES ) );
+		if ( !$file || !$file[ 'name' ] )
+			return new JsonErrorResponse( 'No image provided', 500 );
+		
+		$img = $this -> __uploadImg( $file );
 		
 		$data = ( new Picture() )
-			-> setAlt( $_POST[ 'alt' ] )
+			-> setAlt( isset( $_POST[ 'alt' ] ) ? $_POST[ 'alt' ] : '' )
+			-> setProductId( $_POST[ 'productId' ] ? (int)$_POST[ 'productId' ] : -1 )
 			-> setUrl( $img[ 'name' ] );
+		
 		
 		try {
 			

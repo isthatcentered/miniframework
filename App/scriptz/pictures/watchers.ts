@@ -2,7 +2,8 @@ import * as $ from 'jQuery'
 import { EVENTS_PICTURES } from './events'
 import { PictureAjaxUploadComponent } from './components/PictureAjaxUpload.component'
 
-const $picturePostForm = $( '.js-picture-post' )
+const $picturePostForm             = $( '.js-picture-post' ),
+      $pictureAddDynamicFormButton = $( '.js-picture-add-form' )
 
 export interface IEventDataPicturePost
 {
@@ -23,5 +24,14 @@ $picturePostForm
 			data
 		} )
 		
-		$( this ).append( new PictureAjaxUploadComponent().render() )
+	} )
+
+$pictureAddDynamicFormButton
+	.on( 'click', function ( e ) {
+		
+		$( this )
+			.wrap( `<div></div>` ) // @todo: This is gonna do nasty stuff in markup when multiple inputs
+			.parent()
+			.prepend( new PictureAjaxUploadComponent().render() )
+		
 	} )

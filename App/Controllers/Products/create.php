@@ -35,6 +35,7 @@
 		
 		<button class="btn btn-primary" type="submit">Ajouter le produit</button>
 	</form>
+
 </main>
 
 <?php require_once __DIR__ . '/../../partials/scripts.php'; ?>

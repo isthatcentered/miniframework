@@ -1,21 +1,16 @@
 <?php require_once __DIR__ . '/../../partials/head.php'; ?>
 
-<header>
-	<?php require_once __DIR__ . '/../../partials/nav.php'; ?>
-</header>
+<?php require_once __DIR__ . '/../../partials/header.php'; ?>
 
 <div class="container">
 	
-	<h1 class="mb-3">Produits</h1>
-	
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="<?php echo $vars[ 'URL_ADMIN' ]; ?>">Accueil</a></li>
-		<li class="breadcrumb-item active">Produits</li>
-	</ol>
 	
 	<main>
 		
-		<a href="<?php echo $vars[ 'URL_ADMIN' ] . '/products/new'; ?>" class="btn btn-primary btn-sm mb-3">+ Ajouter un produit</a>
+		<a href="<?php echo $vars[ 'URL_ADMIN' ] . '/products/new'; ?>"
+		   class="btn btn-primary btn-sm mb-5">
+			+ Ajouter un produit
+		</a>
 		
 		<table class="table">
 			<thead>

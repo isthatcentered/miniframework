@@ -15,7 +15,7 @@ $( 'body' )
 		
 		
 		// Config new post action
-		const c: IAjaxAction = {
+		const c: JQueryAjaxSettings = {
 			method:      eData.from.prop( 'method' ).toUpperCase(),
 			url:         eData.from.prop( 'action' ),
 			data:        eData.data,

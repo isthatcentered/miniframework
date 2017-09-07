@@ -14,7 +14,7 @@ export interface IAjaxAction
 export interface IActionEvent
 {
 	from // Element action was instantiated on
-	action: IAjaxAction // link to call when action confirmed
+	action: JQueryAjaxSettings // link to call when action confirmed
 	redirect?: string
 	onSuccess?: FlashEventData
 	onError?: FlashEventData
@@ -26,7 +26,7 @@ export class ActionEventData implements IActionEvent
 {
 	
 	from // Element action was instantiated on
-	action: IAjaxAction // link to call when action confirmed
+	action: JQueryAjaxSettings // link to call when action confirmed
 	redirect?: string
 	onSuccess?: FlashEventData
 	onError?: FlashEventData

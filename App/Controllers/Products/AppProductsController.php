@@ -13,12 +13,18 @@ class AppProductsController extends AppController
 	
 	public function indexAction()
 	{
+		
 		// Model
 		$products = $this -> fetchFromApi( 'products' );
 		
 		return new Response(
-			$this -> render( __DIR__ . '/products.php', [
-				'products' => $products, 'baseUrl' => $this -> baseUrl
+			$this -> render( __DIR__ . '/views/list.php', [
+				'products'    => $products, 'baseUrl' => $this -> baseUrl,
+				'page_title'  => 'Produits',
+				'breadcrumbs' => [
+					[ 'link' => 'Accueil', 'url' => '/' ],
+					[ 'link' => 'Produits', 'url' => '/products' ],
+				]
 			] )
 		);
 		
@@ -44,7 +50,7 @@ class AppProductsController extends AppController
 	public function newAction()
 	{
 		return new Response(
-			$this -> render( __DIR__ . '/create.php')
+			$this -> render( __DIR__ . '/create.php' )
 		);
 	}
 	

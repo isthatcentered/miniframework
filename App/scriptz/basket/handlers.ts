@@ -25,13 +25,14 @@ body
 		
 		
 		basket.empty()
-			.prepend( '<a href="#">Checkout</a>' )
+			.prepend( '<a href="#" class="btn btn-primary btn-sm">Checkout</a>' )
 			.prepend( new BasketTotalComponent( _price ).render() )
 			.prepend(
 				new BasketItemsListComponent(
 					_products.map( item =>
 						new BasketItemSingleComponent( item ) ) )
 					.render() )
+			.prepend( '<h2 class="h5">Panier:</h2>' )
 		
 		
 		

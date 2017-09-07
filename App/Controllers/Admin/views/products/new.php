@@ -4,23 +4,15 @@
 		display: block;
 	}
 </style>
-<header>
-	<?php require_once __DIR__ . '/../../partials/nav.php'; ?>
-</header>
+<?php require_once __DIR__ . '/../../partials/header.php'; ?>
 
 <div class="container">
 	
-	<h1 class="mb-3">Produits</h1>
-	
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="<?php echo $vars[ 'URL_ADMIN' ]; ?>">Accueil</a></li>
-		<li class="breadcrumb-item"><a href="<?php echo $vars[ 'URL_ADMIN' ] . '/products'; ?>">Produits</a></li>
-		<li class="breadcrumb-item active">Nouveau</li>
-	</ol>
 	
 	<main>
 		
-		<form class="js-product-post"
+		
+		<form class="js-product-post mb-3"
 		      action="/"
 		      method="post">
 			
@@ -39,6 +31,8 @@
 				<input type="number" name="price" placeholder="100" required>
 			</label>
 			
+			<a href="#" data-product-id="" class="mb-3 js-picture-add-form" style="display: inline-block;">Ajouter une image</a>
+			<br>
 			<!--	<label class="form-group">-->
 			<!--		<span class="form-control-label">Image:</span>-->
 			<!--		<input type="file" name="img">-->
@@ -46,6 +40,8 @@
 			
 			<button class="btn btn-primary" type="submit">Ajouter le produit</button>
 		</form>
+		
+	
 	</main>
 </div>
 

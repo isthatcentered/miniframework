@@ -24,7 +24,7 @@ gulp.task( 'clean', () =>
 
 // Sass ============================================================================================
 gulp.task( 'styles', () =>
-	gulp.src( STYLES + '/**/*.scss', { base: 'src' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
+	gulp.src( 'public/styles/**/*.scss', { base: '.' } ) // {base: "./src"} allows us to maintain folders path starting at ./src
 	// .pipe( $.wait( 500 ) ) // needed when working with vscode, otherwise you get a file not working error
 		.pipe( $.sass().on( 'error', $.sass.logError ) )
 		.pipe( $.debug( { title: 'Styles:' } ) ) // Log parsed files
@@ -32,24 +32,24 @@ gulp.task( 'styles', () =>
 		.pipe( $.sourcemaps.init() ) // Allowing tracking of class origin with sourcemaps
 		.pipe( $.sass().on( 'error', $.sass.logError ) )
 		.pipe( $.sourcemaps.write() ) // Write sourcemaps for browser
-		.pipe( gulp.dest( DIST ) ) )
-
-gulp.task( 'styles:watch', [ 'styles' ], () =>
-	gulp.watch( STYLES + '**/*.scss', [ 'styles' ] ) )
-
-// Scripts ========================================================================================
-const PATH_SCRIPTS = 'App'
-gulp.task( 'scripts', () =>
-	gulp.src( PATH_SCRIPTS + '/**/*.ts', { base: '.' } )
-		.pipe( $.typescript( {
-			noEmitOnError: false,
-			target: 'ES5'
-		} ) )
 		.pipe( gulp.dest( '.' ) ) )
 
-gulp.task( 'scripts:watch', [ 'scripts' ], () =>
-	gulp.watch( PATH_SCRIPTS + '/**/*.ts', [ 'scripts' ] ) )
-
+gulp.task( 'styles:watch', [ 'styles' ], () =>
+	gulp.watch( 'public/styles**/*.scss', [ 'styles' ] ) )
+//
+// // Scripts ========================================================================================
+// const PATH_SCRIPTS = 'App'
+// gulp.task( 'scripts', () =>
+// 	gulp.src( PATH_SCRIPTS + '/**/*.ts', { base: '.' } )
+// 		.pipe( $.typescript( {
+// 			noEmitOnError: false,
+// 			target: 'ES5'
+// 		} ) )
+// 		.pipe( gulp.dest( '.' ) ) )
+//
+// gulp.task( 'scripts:watch', [ 'scripts' ], () =>
+// 	gulp.watch( PATH_SCRIPTS + '/**/*.ts', [ 'scripts' ] ) )
+//
 
 // Pug ============================================================================================
 // gulp.task( 'templates', () =>
@@ -77,7 +77,7 @@ gulp.task( 'server', [], () => {
 
 	bsync.init( {
 
-		files: [ 'index.{php,html}', '{App,Api,Core}/**/*.{php,html,js}' ], // Refresh browser when your see a change in one of those files
+		files: [ 'index.{php,html,css}', '{App,Api,Core,public}/**/*.{php,html,js,css}' ], // Refresh browser when your see a change in one of those files
 		// notify: false, // Don't log
 		//port: 3000,
 		ui: false,
